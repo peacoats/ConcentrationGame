@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bh = new ButtonHandler();
-        //setContentView(R.layout.activity_main);
         gs = new GameStrings(this, bh);
         setContentView(gs);
     }
@@ -40,7 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 gs.shuffle();
             } else {
                 currentButton = gs.whichButton(clicked);
-                gs.text(currentButton);
+                gs.onoff(currentButton);
+                gs.matchp1(currentButton);
+                gs.matchp2(currentButton);
             }
         }
     }

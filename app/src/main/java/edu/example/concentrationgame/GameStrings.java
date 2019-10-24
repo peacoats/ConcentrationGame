@@ -19,6 +19,10 @@ public class GameStrings extends GridLayout {
     private Button playButton;
     private Button resetButton;
     private static final int NONE = -1;
+    private int p1score;
+    private int p2score;
+    private Random rgen;
+
     public GameStrings(AppCompatActivity context, OnClickListener ocl) {
         super(context);
         this.setColumnCount(4);
@@ -44,9 +48,6 @@ public class GameStrings extends GridLayout {
         list[17] = "R2D2";
         list[18] = "Boba Fett";
         list[19] = "Boba Fett";
-        //List<String> strList = Arrays.asList(list);
-        //Collections.shuffle(strList);
-        //list = strList.toArray(new String[strList.size()]);
         Point size = new Point();
         context.getWindowManager().getDefaultDisplay().getSize(size);
         int width = size.x / 4;
@@ -60,88 +61,102 @@ public class GameStrings extends GridLayout {
         playButton = new Button(context);
         playButton.setOnClickListener(ocl);
         playButton.setText("PLAY");
-        this.addView(playButton,width,width);
+        this.addView(playButton, width, width);
 
         resetButton = new Button(context);
         resetButton.setOnClickListener(ocl);
         resetButton.setText("Reset");
-        this.addView(resetButton,width,width);
+        this.addView(resetButton, width, width);
 
         TextView blank1 = new TextView(context);
         blank1.setText("");
-        this.addView(blank1,width,width);
+        this.addView(blank1, width, width);
         TextView blank2 = new TextView(context);
         blank2.setText("");
-        this.addView(blank2,width,width);
+        this.addView(blank2, width, width);
         TextView p1tv = new TextView(context);
         p1tv.setText("Player 1");
-        this.addView(p1tv,width,width);
+        this.addView(p1tv, width, width);
         TextView p1numtv = new TextView(context);
-        p1numtv.setText("1");
-        this.addView(p1numtv,width,width);
+        p1numtv.setText(p1score + "");
+        this.addView(p1numtv, width, width);
         TextView p2tv = new TextView(context);
         p2tv.setText("Player 2");
-        this.addView(p2tv,width,width);
+        this.addView(p2tv, width, width);
         TextView p2numtv = new TextView(context);
-        p2numtv.setText("2");
-        this.addView(p2numtv,width,width);
+        p2numtv.setText(p2score + "");
+        this.addView(p2numtv, width, width);
 
     }
 
-    public boolean match(){
-        return false;
+    public int matchp1(int buttonIndex) {
+        if (button[buttonIndex].getText().equals(button[buttonIndex].getText())) {
+            p1score = p1score + 1;
+        }
+        return p1score;
     }
-    public void enable (){
-        for (int i = 0; i < 20; i++){
-           button[i].setEnabled(true);
+    public int matchp2(int buttonIndex) {
+        if (button[buttonIndex].getText().equals(button[buttonIndex].getText())) {
+            p2score = p2score + 1;
+        }
+        return p2score;
+    }
+
+    public void enable() {
+        for (int i = 0; i < 20; i++) {
+            button[i].setEnabled(true);
         }
     }
 
-    public void disable (){
-        for (int i = 0; i < 20; i++){
+    public void disable() {
+        for (int i = 0; i < 20; i++) {
             button[i].setEnabled(false);
         }
     }
 
-    public void shuffle(){
-        List<String> strList = Arrays.asList(list);
-        Collections.shuffle(strList);
-        list = strList.toArray(new String[strList.size()]);
+    public void shuffle() {
+        rgen = new Random();
+        int rand = rgen.nextInt(20);
+        for (int i = 0; i < 19; i++) {
+            String temp;
+            temp = list[i];
+            list[i] = list[rand];
+            list[rand] = temp;
+        }
     }
 
-    public void text (int buttonIndex) {
+    public void text(int buttonIndex) {
         int n = 1;
         button[buttonIndex].setText(list[buttonIndex]);
     }
 
-    public void detext (int buttonIndex) {
+    public void detext(int buttonIndex) {
         int n = 0;
-        button[buttonIndex].setText(null);
+        button[buttonIndex].setText("");
     }
 
-    public boolean isPlayButton(Button b){return b==playButton;}
+    public void onoff(int buttonIndex) {
+        if (button[buttonIndex].getText().equals("")) {
+            text(buttonIndex);
+        } else {
+            detext(buttonIndex);
+        }
+    }
 
-    public boolean isResetButton(Button b){return b==resetButton;}
+    public boolean isPlayButton(Button b) {
+        return b == playButton;
+    }
 
-    public int whichButton(Button b){
-        for(int index=0; index<20; index++){
-            if (b==button[index]){
+    public boolean isResetButton(Button b) {
+        return b == resetButton;
+    }
+
+    public int whichButton(Button b) {
+        for (int index = 0; index < 20; index++) {
+            if (b == button[index]) {
                 return index;
             }
         }
         return NONE;
     }
-
-
-
-    /**public void shuffle(String list[], int n){
-        Random rgen = new Random();
-        for (int i = 0; i < n; i++){
-            int j = rgen.nextInt();
-            String temp = list[i];
-            list[i] = list[j];
-            list[j] = temp;
-
-        }
-    }**/
 }
